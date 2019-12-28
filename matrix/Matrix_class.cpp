@@ -94,3 +94,54 @@ std::ostream& operator<< (std::ostream &out,const  Matrix &matrix)
     return out;
 }
 
+///оператор проверки на равенство (==): он должен возвращать true, если сравниваемые матрицы имеют одинаковый размер и все их соответствующие элементы равны между собой, в противном случае он должен возвращать false.
+bool operator== (const Matrix &m1, const Matrix &m2)
+{
+    if(m1.GetNumRows()==m2.GetNumRows() && m1.GetNumCols()==m2.GetNumCols())
+    {
+        for(int i = 0; i<m1.GetNumRows();i++)
+        {
+            for(int j = 0; j<m1.GetNumCols();j++)
+            {
+                if(m1.At(i, j) != m2.At(i,j))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+///оператор сложения: он должен принимать две матрицы и возвращать новую матрицу, которая является их суммой; если переданные матрицы имеют разные размеры этот оператор должен выбрасывать стандартное исключение invalid_argument.
+const Matrix operator+(const Matrix& left, const Matrix& right) {
+    Matrix newMatrix=left;
+    if(left.GetNumRows()==right.GetNumRows() && left.GetNumCols()==right.GetNumCols())
+    {
+        for(int i = 0; i<newMatrix.GetNumRows();i++)
+        {
+            for(int j = 0; j<newMatrix.GetNumCols();j++)
+            {
+                newMatrix.At(i, j) = left.At(i, j) + right.At(i, j);
+            }
+        }
+    }
+    else{
+        throw std::invalid_argument("different size");
+    }
+    
+    
+    
+    return newMatrix;
+}
+
+Matrix Matrix::operator=(Matrix other)
+{
+    _rows = other._rows;
+    _cols = other._cols;
+    arr = other.arr;
+    return *this;
+}
